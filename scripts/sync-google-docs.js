@@ -202,6 +202,16 @@ async function main() {
 }
 
 main().catch((err) => {
-  console.error("Sync failed:", err.message);
+  const status = err?.code || err?.response?.status;
+  const details = err?.errors || err?.response?.data || err?.message;
+
+  console.error("Sync failed:", {
+    status,
+    message: err?.message,
+    details,
+    hint:
+      "Check GOOGLE_DRIVE_FOLDER_ID is the correct Drive folder ID and that the folder is shared with GOOGLE_CLIENT_EMAIL (service account).",
+  });
+
   process.exit(1);
 });
