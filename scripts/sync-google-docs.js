@@ -97,12 +97,24 @@ async function main() {
     console.error("Missing GOOGLE_DRIVE_FOLDER_ID");
     process.exit(1);
   }
+  if (rootFolderId.trim() === "." || rootFolderId.trim() === "/") {
+    console.error(`Invalid GOOGLE_DRIVE_FOLDER_ID value: "${rootFolderId}"`);
+    process.exit(1);
+  }
 
   // Discover sub-folders (Notes, Collections)
-  const foldersRes = await drive.files.list({
-    q: `'${rootFolderId}' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false`,
-    fields: "files(id, name)",
-  });
+  let foldersRes;
+  try {
+    foldersRes = await drive.files.list({
+      q: `'${rootFolderId}' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false`,
+      fields: "files(id, name)",
+    });
+  } catch (err) {
+    console.error("Failed to list publish subfolders.");
+    console.error("GOOGLE_DRIVE_FOLDER_ID:", rootFolderId);
+    console.error("Drive error:", err?.response?.data || err?.message || err);
+    process.exit(1);
+  }
 
   const folderMap = {};
   for (const f of foldersRes.data.files) {
@@ -110,6 +122,15 @@ async function main() {
   }
 
   console.log("Found publish folders:", Object.keys(folderMap).join(", "));
+  if (Object.keys(folderMap).length === 0) {
+    console.error(
+      "No subfolders found under the publish folder. Expected at least Notes/ and Collections/."
+    );
+    console.error(
+      "Check that the folder ID is correct and the service account has access."
+    );
+    process.exit(1);
+  }
 
   const syncedDocIds = new Set();
 
