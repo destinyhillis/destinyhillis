@@ -1,0 +1,23 @@
+{% set currentUrl = page.url %}
+{% set allNotes = collections.notes %}
+{% set linked = [] %}
+
+{% for note in allNotes %}
+  {% if note.url != currentUrl %}
+    {% set noteContent = note.content %}
+    {% if noteContent and (currentUrl in noteContent) %}
+      {% set linked = (linked.push(note), linked) %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+{% if linked.length > 0 %}
+<aside class="backlinks">
+  <h2>Linked to this note</h2>
+  <ul>
+    {% for link in linked %}
+    <li><a href="{{ link.url }}">{{ link.data.title }}</a></li>
+    {% endfor %}
+  </ul>
+</aside>
+{% endif %}

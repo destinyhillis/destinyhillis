@@ -1,0 +1,41 @@
+---
+title: "Now"
+layout: base.njk
+visibility: public
+permalink: /
+---
+
+<section class="now-page">
+  <h1>Now</h1>
+  <p class="now-subtitle">what’s currently taking up space in my head</p>
+
+  <div class="recent-feed">
+    {% for item in collections.recent %}
+    <article class="recent-card">
+      <a href="{{ item.url }}">
+        <div class="recent-card-header">
+          <h2>{{ item.data.title }}</h2>
+          <span class="recent-card-type">{{ item.data.type or "note" }}</span>
+        </div>
+        <time datetime="{{ item.date | isoDate }}">{{ item.date | readableDate }}</time>
+        {% if item.data.summary %}
+        <p class="recent-card-summary">{{ item.data.summary }}</p>
+        {% else %}
+        <p class="recent-card-summary">{{ item.content | truncate(150) }}</p>
+        {% endif %}
+        {% if item.data.tags %}
+        <ul class="tag-list">
+          {% for tag in item.data.tags %}
+          <li class="tag">{{ tag }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </a>
+    </article>
+    {% endfor %}
+
+    {% if collections.recent.length == 0 %}
+    <p class="empty-state">Nothing here yet. Check back soon.</p>
+    {% endif %}
+  </div>
+</section>

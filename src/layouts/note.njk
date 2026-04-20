@@ -1,0 +1,28 @@
+---
+layout: base.njk
+---
+
+<article class="note">
+  <header class="note-header">
+    <h1>{{ title }}</h1>
+    <div class="note-meta">
+      <time datetime="{{ date | isoDate }}">{{ date | readableDate }}</time>
+      {% if tags %}
+      <ul class="tag-list">
+        {% for tag in tags %}
+        <li class="tag">{{ tag }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+    {% if summary %}
+    <p class="note-summary">{{ summary }}</p>
+    {% endif %}
+  </header>
+
+  <div class="note-body prose">
+    {{ content | safe }}
+  </div>
+
+  {% include "backlinks.njk" %}
+</article>

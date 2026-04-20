@@ -1,0 +1,34 @@
+---
+title: "Collections"
+layout: base.njk
+visibility: public
+permalink: /collections/
+---
+
+<section class="now-page">
+  <h1>Collections</h1>
+  <p class="now-subtitle">small archives of lists, writing, and things I return to</p>
+
+  {% for item in collections.collections %}
+  <article class="garden-card">
+    <a href="{{ item.url }}">
+      <h2>{{ item.data.title }}</h2>
+      <time datetime="{{ item.date | isoDate }}">{{ item.date | readableDate }}</time>
+      {% if item.data.summary %}
+      <p>{{ item.data.summary }}</p>
+      {% endif %}
+      {% if item.data.tags %}
+      <ul class="tag-list">
+        {% for tag in item.data.tags %}
+        <li class="tag">{{ tag }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </a>
+  </article>
+  {% endfor %}
+
+  {% if collections.collections.length == 0 %}
+  <p class="empty-state">No collections yet. Check back soon.</p>
+  {% endif %}
+</section>
