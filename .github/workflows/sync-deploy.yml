@@ -1,4 +1,4 @@
-name: Sync and Deploy Digital Garden
+name: Sync and Deploy
 
 on:
   schedule:

@@ -177,8 +177,11 @@ async function main() {
         mimeType: "text/html",
       });
 
+      // Strip Google Docs style blocks before conversion
+      const cleanHtml = exportRes.data.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "");
+
       // Convert HTML → Markdown, then replace emojis with SVG icons
-      const markdown = replaceEmojis(turndown.turndown(exportRes.data));
+      const markdown = replaceEmojis(turndown.turndown(cleanHtml));
       const date = file.modifiedTime.split("T")[0];
 
       // Determine type + output path
