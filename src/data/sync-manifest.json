@@ -1,12 +1,17 @@
 {
   "14yq-f4aaW-9z0HPcdPSKqxER1LV6jyOy64ZuD7MTZlc": {
-    "path": "/Users/destinyhillis/Desktop/my stuff/digital-garden/src/content/notes/new-new.md",
+    "path": "/home/runner/work/destinyhillis/destinyhillis/src/content/notes/new-new.md",
     "title": "New new",
     "type": "note"
   },
   "1IR09ohUjeXWemgk0dnmDZkhR5eYZipi615CF0CgkXss": {
-    "path": "/Users/destinyhillis/Desktop/my stuff/digital-garden/src/content/notes/testiny.md",
+    "path": "/home/runner/work/destinyhillis/destinyhillis/src/content/notes/testiny.md",
     "title": "Testiny",
     "type": "note"
+  },
+  "1VK8N69vER3TaJOSoTTBTpcOq1B3-Td1vib18Kg1LIgY": {
+    "path": "/home/runner/work/destinyhillis/destinyhillis/src/content/collections/new-collection.md",
+    "title": "New collection",
+    "type": "collection"
   }
 }
