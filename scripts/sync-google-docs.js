@@ -40,11 +40,37 @@ function saveManifest(manifest) {
 }
 
 // --- Auth ---
+function normalizePrivateKey(raw) {
+  if (!raw) return raw;
+
+  let key = raw.trim();
+
+  // Strip wrapping quotes if the secret was pasted with them
+  if ((key.startsWith('"') && key.endsWith('"')) || (key.startsWith("'") && key.endsWith("'"))) {
+    key = key.slice(1, -1);
+  }
+
+  // Convert escaped newlines to real newlines
+  key = key.replace(/\\n/g, "\n");
+
+  // If it doesn't look like a PEM block, assume base64 and decode
+  if (!key.includes("BEGIN PRIVATE KEY")) {
+    try {
+      const decoded = Buffer.from(key, "base64").toString("utf8");
+      if (decoded.includes("BEGIN PRIVATE KEY")) key = decoded;
+    } catch {
+      // leave as-is
+    }
+  }
+
+  return key;
+}
+
 function getAuth() {
   return new google.auth.GoogleAuth({
     credentials: {
       client_email: process.env.GOOGLE_CLIENT_EMAIL,
-      private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+      private_key: normalizePrivateKey(process.env.GOOGLE_PRIVATE_KEY),
     },
     scopes: [
       "https://www.googleapis.com/auth/drive.readonly",
