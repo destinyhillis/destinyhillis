@@ -118,13 +118,14 @@ async function main() {
   const turndown = new TurndownService({ headingStyle: "atx" });
   const manifest = loadManifest();
 
-  const rootFolderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
+  const rootFolderId = process.env.GOOGLE_DRIVE_FOLDER_ID?.trim();
   if (!rootFolderId) {
     console.error("Missing GOOGLE_DRIVE_FOLDER_ID");
     process.exit(1);
   }
-  if (rootFolderId.trim() === "." || rootFolderId.trim() === "/") {
-    console.error(`Invalid GOOGLE_DRIVE_FOLDER_ID value: "${rootFolderId}"`);
+  if (!/^[a-zA-Z0-9_-]{10,}$/.test(rootFolderId)) {
+    console.error(`Invalid GOOGLE_DRIVE_FOLDER_ID: "${rootFolderId}"`);
+    console.error("Expected a Google Drive folder ID (long alphanumeric string). Check for extra quotes, spaces, or path characters.");
     process.exit(1);
   }
 
